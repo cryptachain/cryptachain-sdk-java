@@ -1,0 +1,55 @@
+name: Publish to Maven Central
+
+# Publishes com.cryptachain:cryptachain-sdk to Maven Central on a GitHub Release.
+#
+# ONE-TIME SETUP (before the first release can succeed):
+#   1. Register com.cryptachain namespace at https://central.sonatype.com
+#      (verified via github.com/cryptachain or DNS on cryptachain.com)
+#   2. Generate a Central Portal user token → yields USERNAME + PASSWORD
+#   3. Generate a GPG key for signing:
+#         gpg --generate-key
+#         gpg --armor --export-secret-keys <KEY_ID> > private.asc
+#         gpg --keyserver keys.openpgp.org --send-keys <KEY_ID>
+#   4. Add these GitHub repo secrets:
+#        OSSRH_USERNAME          (Central Portal token name)
+#        OSSRH_TOKEN             (Central Portal token password)
+#        MAVEN_GPG_PRIVATE_KEY   (contents of private.asc)
+#        MAVEN_GPG_PASSPHRASE    (the GPG passphrase)
+#   5. Add <distributionManagement>, maven-gpg-plugin, and
+#      central-publishing-maven-plugin to pom.xml (under a "release" profile).
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: maven
+          server-id: central
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          mvn -B versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
+
+      - name: Deploy to Maven Central
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: mvn -B -P release deploy
