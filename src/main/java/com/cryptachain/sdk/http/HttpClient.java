@@ -148,7 +148,7 @@ public final class HttpClient {
                 .GET()
                 .header("X-API-Key", config.apiKey())
                 .header("Accept", "application/json")
-                .header("User-Agent", "cryptachain-sdk-java/0.1.0")
+                .header("User-Agent", "cryptachain-sdk-java/0.1.1")
                 .timeout(config.requestTimeout())
                 .build();
     }
@@ -167,7 +167,7 @@ public final class HttpClient {
                 .header("X-API-Key", config.apiKey())
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
-                .header("User-Agent", "cryptachain-sdk-java/0.1.0")
+                .header("User-Agent", "cryptachain-sdk-java/0.1.1")
                 .timeout(config.requestTimeout())
                 .build();
     }
