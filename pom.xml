@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cryptachain</groupId>
     <artifactId>cryptachain-sdk</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
     <name>CryptaChain SDK</name>
     <description>Official Java SDK for the CryptaChain API</description>

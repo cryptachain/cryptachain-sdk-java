@@ -35,7 +35,7 @@ public final class ScreeningResource {
      */
     public ScreeningResult screenAddress(String address, String chain) {
         Map<String, String> params = Map.of("address", address, "chain", chain);
-        return httpClient.get("/api/v1/screen/address", params, ScreeningResult.class);
+        return httpClient.get("/v1/screen/address", params, ScreeningResult.class);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class ScreeningResource {
      */
     public CompletableFuture<ScreeningResult> screenAddressAsync(String address, String chain) {
         Map<String, String> params = Map.of("address", address, "chain", chain);
-        return httpClient.getAsync("/api/v1/screen/address", params, ScreeningResult.class);
+        return httpClient.getAsync("/v1/screen/address", params, ScreeningResult.class);
     }
 
     /**
@@ -59,7 +59,7 @@ public final class ScreeningResource {
      */
     public BulkScreeningResponse screenBulk(List<String> addresses, String chain) {
         Map<String, Object> body = Map.of("addresses", addresses, "chain", chain);
-        return httpClient.post("/api/v1/screen/bulk", body, BulkScreeningResponse.class);
+        return httpClient.post("/v1/screen/bulk", body, BulkScreeningResponse.class);
     }
 
     /**
@@ -71,6 +71,6 @@ public final class ScreeningResource {
      */
     public CompletableFuture<BulkScreeningResponse> screenBulkAsync(List<String> addresses, String chain) {
         Map<String, Object> body = Map.of("addresses", addresses, "chain", chain);
-        return httpClient.postAsync("/api/v1/screen/bulk", body, BulkScreeningResponse.class);
+        return httpClient.postAsync("/v1/screen/bulk", body, BulkScreeningResponse.class);
     }
 }
