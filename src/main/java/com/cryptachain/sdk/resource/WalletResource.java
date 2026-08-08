@@ -40,7 +40,7 @@ public final class WalletResource {
         params.put("chain", chain);
         if (cursor != null) params.put("cursor", cursor);
         if (pageSize != null) params.put("page_size", pageSize.toString());
-        return httpClient.get("/v1/wallets/" + address + "/transfers", params, TransferPage.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/transfers", params, TransferPage.class);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class WalletResource {
         params.put("chain", chain);
         if (cursor != null) params.put("cursor", cursor);
         if (pageSize != null) params.put("page_size", pageSize.toString());
-        return httpClient.getAsync("/v1/wallets/" + address + "/transfers", params, TransferPage.class);
+        return httpClient.getAsync("/v1/wallets/" + PathSegments.encode(address) + "/transfers", params, TransferPage.class);
     }
 
     /**
@@ -106,7 +106,7 @@ public final class WalletResource {
         params.put("chain", chain);
         if (cursor != null) params.put("cursor", cursor);
         if (pageSize != null) params.put("page_size", pageSize.toString());
-        return httpClient.get("/v1/wallets/" + address + "/erc20-transfers", params, TransferPage.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/erc20-transfers", params, TransferPage.class);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class WalletResource {
         params.put("chain", chain);
         if (cursor != null) params.put("cursor", cursor);
         if (pageSize != null) params.put("page_size", pageSize.toString());
-        return httpClient.get("/v1/wallets/" + address + "/nft-transfers", params, TransferPage.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/nft-transfers", params, TransferPage.class);
     }
 
     /**
@@ -140,7 +140,7 @@ public final class WalletResource {
         params.put("chain", chain);
         if (cursor != null) params.put("cursor", cursor);
         if (pageSize != null) params.put("page_size", pageSize.toString());
-        return httpClient.get("/v1/wallets/" + address + "/native-transfers", params, TransferPage.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/native-transfers", params, TransferPage.class);
     }
 
     /**
@@ -152,7 +152,7 @@ public final class WalletResource {
      */
     public TokenBalancesResponse getBalances(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.get("/v1/wallets/" + address + "/balances", params, TokenBalancesResponse.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/balances", params, TokenBalancesResponse.class);
     }
 
     /**
@@ -164,7 +164,7 @@ public final class WalletResource {
      */
     public CompletableFuture<TokenBalancesResponse> getBalancesAsync(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.getAsync("/v1/wallets/" + address + "/balances", params, TokenBalancesResponse.class);
+        return httpClient.getAsync("/v1/wallets/" + PathSegments.encode(address) + "/balances", params, TokenBalancesResponse.class);
     }
 
     /**
@@ -176,7 +176,7 @@ public final class WalletResource {
      */
     public NativeBalance getNativeBalance(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.get("/v1/wallets/" + address + "/native-balance", params, NativeBalance.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/native-balance", params, NativeBalance.class);
     }
 
     /**
@@ -188,7 +188,7 @@ public final class WalletResource {
      */
     public CompletableFuture<NativeBalance> getNativeBalanceAsync(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.getAsync("/v1/wallets/" + address + "/native-balance", params, NativeBalance.class);
+        return httpClient.getAsync("/v1/wallets/" + PathSegments.encode(address) + "/native-balance", params, NativeBalance.class);
     }
 
     /**
@@ -200,7 +200,7 @@ public final class WalletResource {
      */
     public WalletSummary getSummary(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.get("/v1/wallets/" + address + "/summary", params, WalletSummary.class);
+        return httpClient.get("/v1/wallets/" + PathSegments.encode(address) + "/summary", params, WalletSummary.class);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class WalletResource {
      */
     public CompletableFuture<WalletSummary> getSummaryAsync(String address, String chain) {
         Map<String, String> params = Map.of("chain", chain);
-        return httpClient.getAsync("/v1/wallets/" + address + "/summary", params, WalletSummary.class);
+        return httpClient.getAsync("/v1/wallets/" + PathSegments.encode(address) + "/summary", params, WalletSummary.class);
     }
 
     /**

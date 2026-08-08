@@ -28,7 +28,7 @@ public final class TokenResource {
      * @return the token metadata
      */
     public TokenMetadata getBySymbol(String symbol) {
-        return httpClient.get("/v1/tokens/" + symbol, null, TokenMetadata.class);
+        return httpClient.get("/v1/tokens/" + PathSegments.encode(symbol), null, TokenMetadata.class);
     }
 
     /**
@@ -38,6 +38,6 @@ public final class TokenResource {
      * @return a CompletableFuture with the token metadata
      */
     public CompletableFuture<TokenMetadata> getBySymbolAsync(String symbol) {
-        return httpClient.getAsync("/v1/tokens/" + symbol, null, TokenMetadata.class);
+        return httpClient.getAsync("/v1/tokens/" + PathSegments.encode(symbol), null, TokenMetadata.class);
     }
 }
