@@ -1,26 +1,33 @@
 name: Publish to Maven Central
 
-# Publishes com.cryptachain:cryptachain-sdk to Maven Central on a GitHub Release.
+# Publishes com.cryptachain:cryptachain-sdk to Maven Central (Central Portal).
+# Manual only: run "Publish to Maven Central" (workflow_dispatch) with the release tag, e.g. v0.1.1.
+# Creating a GitHub release does NOT publish.
 #
-# ONE-TIME SETUP (before the first release can succeed):
-#   1. Register com.cryptachain namespace at https://central.sonatype.com
-#      (verified via github.com/cryptachain or DNS on cryptachain.com)
-#   2. Generate a Central Portal user token → yields USERNAME + PASSWORD
-#   3. Generate a GPG key for signing:
+# ONE-TIME SETUP (before the first run can succeed):
+#   1. Register and verify the com.cryptachain namespace at https://central.sonatype.com
+#   2. Generate a Central Portal user token -> yields USERNAME + PASSWORD
+#   3. Generate a GPG key for signing and publish its public key:
 #         gpg --generate-key
 #         gpg --armor --export-secret-keys <KEY_ID> > private.asc
+#         gpg --keyserver keyserver.ubuntu.com --send-keys <KEY_ID>
 #         gpg --keyserver keys.openpgp.org --send-keys <KEY_ID>
 #   4. Add these GitHub repo secrets:
-#        OSSRH_USERNAME          (Central Portal token name)
+#        OSSRH_USERNAME          (Central Portal token username)
 #        OSSRH_TOKEN             (Central Portal token password)
 #        MAVEN_GPG_PRIVATE_KEY   (contents of private.asc)
 #        MAVEN_GPG_PASSPHRASE    (the GPG passphrase)
-#   5. (done) pom.xml has a "release" profile: sources + javadoc jars, maven-gpg-plugin signing and
-#      central-publishing-maven-plugin (server id "central"). No credentials/secrets exist yet, so nothing can publish.
+#   pom.xml has a "release" profile: sources + javadoc jars, maven-gpg-plugin signing and
+#   central-publishing-maven-plugin (server id "central", autoPublish=false: after the upload,
+#   press Publish on the deployment at https://central.sonatype.com/publishing/deployments).
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish (must equal v<pom version>), e.g. v0.1.1"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -32,6 +39,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+          persist-credentials: false
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -45,10 +55,16 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Set version from tag
+      - name: Check tag equals pom version
+        env:
+          TAG: ${{ inputs.tag }}
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
-          mvn -B versions:set -DnewVersion=$VERSION -DgenerateBackupPoms=false
+          VERSION="$(mvn -B -q -DforceStdout help:evaluate -Dexpression=project.version)"
+          if [ "$TAG" != "v$VERSION" ]; then
+            echo "tag '$TAG' does not match pom version 'v$VERSION'" >&2
+            exit 1
+          fi
+          echo "OK: $TAG == v$VERSION"
 
       - name: Deploy to Maven Central
         env:
