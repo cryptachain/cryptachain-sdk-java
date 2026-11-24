@@ -19,15 +19,15 @@
 
     <developers>
         <developer>
-            <name>CryptaChain</name>
+            <name>CryptaCount, Inc.</name>
             <organization>CryptaCount, Inc.</organization>
-            <organizationUrl>https://cryptachain.com</organizationUrl>
+            <organizationUrl>https://github.com/cryptachain</organizationUrl>
         </developer>
     </developers>
 
     <scm>
         <connection>scm:git:git://github.com/cryptachain/cryptachain-sdk-java.git</connection>
-        <developerConnection>scm:git:ssh://github.com:cryptachain/cryptachain-sdk-java.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/cryptachain/cryptachain-sdk-java.git</developerConnection>
         <url>https://github.com/cryptachain/cryptachain-sdk-java</url>
     </scm>
 
