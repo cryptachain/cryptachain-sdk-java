@@ -15,12 +15,15 @@ name: Publish to Maven Central
 #        OSSRH_TOKEN             (Central Portal token password)
 #        MAVEN_GPG_PRIVATE_KEY   (contents of private.asc)
 #        MAVEN_GPG_PASSPHRASE    (the GPG passphrase)
-#   5. Add <distributionManagement>, maven-gpg-plugin, and
-#      central-publishing-maven-plugin to pom.xml (under a "release" profile).
+#   5. (done) pom.xml has a "release" profile: sources + javadoc jars, maven-gpg-plugin signing and
+#      central-publishing-maven-plugin (server id "central"). No credentials/secrets exist yet, so nothing can publish.
 
 on:
   release:
     types: [published]
+
+permissions:
+  contents: read
 
 jobs:
   publish:
